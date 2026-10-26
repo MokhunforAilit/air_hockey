@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b101a"><title>Air Rush — Local Air Hockey</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+<a class="brand" href="#" aria-label="Air Rush"><span class="brand-mark">↗</span> AIR RUSH <span class="brand-sub">ARCADE CLUB</span></a>
+<div class="header-tools"><span class="local-tag"><i></i> LOCAL PLAY</span><button class="icon-button" id="sound" aria-pressed="true" aria-label="Mute sound">Sound on</button></div>
+</header>
+<main class="layout">
+<section class="setup" aria-labelledby="title">
+<p class="eyebrow"><span>01</span> THE TABLE IS YOURS</p>
+<h1 id="title">Good reflexes.<br><em>Great rivalries.</em></h1>
+<p class="intro">Pick your opponent. Find your angle.<br>Keep your cool when the rush hits.</p>
+<form id="settings" novalidate>
+<fieldset id="setting-fields"><legend class="sr-only">Match settings</legend>
+<div class="section-label"><span>OPPONENT</span><span>01 / 03</span></div>
+<div class="segmented mode-picker" role="group" aria-label="Opponent">
+<button type="button" data-mode="bot" class="selected" aria-pressed="true"><span class="mode-symbol">◈</span><strong>Play the bot</strong><small>One player</small></button>
+<button type="button" data-mode="pvp" aria-pressed="false"><span class="mode-symbol">↔</span><strong>Local versus</strong><small>Two players</small></button>
+</div>
+<div class="inline-setting" id="difficulty-row"><label for="difficulty">Bot difficulty</label><select id="difficulty"><option value="easy">Easy</option><option value="normal" selected>Normal</option><option value="hard">Hard</option></select></div>
+<div class="section-label"><span>MATCH RULES</span><span>02 / 03</span></div>
+<div class="rule-heading"><label for="target">First to score</label><span>POINTS</span></div>
+<div class="target-row"><div class="segmented score-presets" role="group" aria-label="Winning score presets"><button type="button" data-target="5" aria-pressed="false">5</button><button type="button" data-target="10" class="selected" aria-pressed="true">10</button><button type="button" data-target="15" aria-pressed="false">15</button></div><input id="target" type="number" min="1" max="50" step="1" value="10" aria-label="Custom winning score, 1 to 50" required></div>
+<label class="setting-label" for="speed">Puck speed <output id="speed-value" for="speed">Normal</output></label>
+<input class="speed-range" type="range" id="speed" min="0" max="2" step="1" value="1">
+<div class="range-labels"><span>Slow</span><span>Normal</span><span>Fast</span></div>
+<div class="section-label"><span>EXPECT THE UNEXPECTED</span><span>03 / 03</span></div>
+<div class="rush-card">
+<div class="rush-title"><span class="bolt" aria-hidden="true">ϟ</span><div><label for="rush-enabled">Random rush</label><p>A little chaos. A lot more speed.</p></div><label class="switch"><input id="rush-enabled" type="checkbox" checked><span></span></label></div>
+<details id="rush-details"><summary>Rush settings <span>+</span></summary>
+<div class="advanced">
+<div><label for="rush-min">Wait at least <small>seconds</small></label><input id="rush-min" type="number" min="5" max="60" value="15" required></div>
+<div><label for="rush-max">Wait at most <small>seconds</small></label><input id="rush-max" type="number" min="5" max="90" value="30" required></div>
+<div><label for="rush-duration">Rush lasts <small>seconds</small></label><input id="rush-duration" type="number" min="3" max="20" value="8" required></div>
+<div><label for="rush-boost">Puck boost</label><select id="rush-boost"><option value="1.25">+25%</option><option value="1.5" selected>+50%</option><option value="1.75">+75%</option><option value="2">+100%</option></select></div>
+</div></details></div>
+</fieldset>
+<button class="primary start-button" id="start" type="submit"><span>Start match</span><span aria-hidden="true">↗</span></button>
+<p id="settings-note" class="settings-note">One keyboard. Endless rematches.</p><p id="form-error" role="alert" class="error"></p>
+</form></section>
+<section class="arena-panel" aria-label="Air hockey game">
+<div class="arena-top"><span class="eyebrow"><i class="status-dot"></i> <span id="match-status">READY TO PLAY</span></span><button id="pause" class="text-button" disabled>Pause <kbd>Esc</kbd></button></div>
+<div class="scoreboard"><div class="player player-one"><span class="player-name"><i></i> PLAYER 1</span><strong id="score-one">00</strong></div><div class="score-middle"><span id="mode-label">SOLO MATCH</span><b>VS</b><span id="target-label">FIRST TO 10</span></div><div class="player player-two"><span class="player-name"><i></i> <span id="opponent-name">BOT</span></span><strong id="score-two">00</strong></div></div>
+<div class="table-wrap" id="table-wrap">
+<canvas id="table" width="600" height="800" tabindex="0" aria-label="Air hockey table. Player 1 moves with A and D. Opponent is the bot."></canvas>
+<div class="overlay" id="overlay"><div class="overlay-card" id="overlay-content"></div></div>
+<div class="table-caption" id="table-caption">READY WHEN YOU ARE</div>
+</div>
+<div class="rush-strip" id="rush-strip"><span class="rush-symbol">ϟ</span><div><strong id="rush-label">RANDOM RUSH ARMED</strong><span id="rush-description">Watch for the amber warning.</span></div><span class="rush-time" id="rush-time">+50%</span></div>
+<div class="control-strip"><div><span class="control-dot cyan"></span><strong>P1</strong><kbd>A</kbd><kbd>D</kbd><span>Move</span></div><span class="control-divider"></span><div id="opponent-controls"><span class="control-dot pink"></span><strong>BOT</strong><span>Computer controlled</span></div></div>
+</section></main>
+<footer><span>BUILT FOR THE REMATCH.</span><span>Tip: aim with the edges of your paddle.</span><span>DESKTOP / KEYBOARD</span></footer>
+<p class="sr-only" id="announcer" role="status" aria-live="polite"></p>
+<dialog id="confirm-dialog"><form method="dialog"><p class="eyebrow">MATCH IN PROGRESS</p><h2 id="confirm-title">Start over?</h2><p id="confirm-copy">Your current score will be cleared.</p><div class="dialog-actions"><button class="secondary" value="cancel">Keep playing</button><button class="primary" id="confirm-action" value="confirm">Restart</button></div></form></dialog>
+<script src="engine.js"></script><script src="game.js"></script>
+</body></html>
+
